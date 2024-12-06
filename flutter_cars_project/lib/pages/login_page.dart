@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class LoginPage extends StatelessWidget {
   final _tLogin = TextEditingController();
   final _tPassword = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +17,48 @@ class LoginPage extends StatelessWidget {
   }
 
   _body() {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: ListView(
-        children: [
-          _text("Login", "Digite o login", controller: _tLogin),
-          SizedBox(
-            height: 10,
-          ),
-          _text("Senha", "Digite a senha", obscureText: true, controller: _tPassword),
-          SizedBox(
-            height: 20,
-          ),
-          _button("Login", _onClickLogin),
-        ],
+    return Form(
+      key: _formKey,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        child: ListView(
+          children: [
+            _text(
+              "Login",
+              "Digite o login",
+              controller: _tLogin,
+              validator: _validateLogin,
+              keyboardType: TextInputType.text,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            _text(
+              "Senha",
+              "Digite a senha",
+              obscureText: true,
+              controller: _tPassword,
+              validator: _validatePassword,
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            _button("Login", _onClickLogin),
+          ],
+        ),
       ),
     );
+  }
+
+  String? _validatePassword(text) {
+    if (text?.isEmpty == true) return "Digite a senha";
+    return null;
+  }
+
+  String? _validateLogin(text) {
+    if (text?.isEmpty == true) return "Digite o login";
+    return null;
   }
 
   Container _button(text, onPressed) {
@@ -53,10 +80,19 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _text(label, hint, {obscureText = false, controller}) {
+  Widget _text(
+    label,
+    hint, {
+    obscureText = false,
+    controller,
+    FormFieldValidator<String>? validator,
+    TextInputType? keyboardType,
+  }) {
     return TextFormField(
+      validator: validator,
       controller: controller,
       obscureText: obscureText,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
@@ -70,6 +106,9 @@ class LoginPage extends StatelessWidget {
   }
 
   void _onClickLogin() {
+    bool? formOk = _formKey.currentState?.validate();
+    if (formOk != true) return;
+
     String login = _tLogin.text;
     String password = _tPassword.text;
 
