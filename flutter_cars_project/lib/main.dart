@@ -1,5 +1,7 @@
-import 'package:asdfasdf/pages/login_page.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_cars/pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,6 +12,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HttpOverrides.global = new MyHttpOverrides();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -25,5 +29,12 @@ class MyApp extends StatelessWidget {
 
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }

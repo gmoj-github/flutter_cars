@@ -1,10 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cars/API/login_api.dart';
+import 'package:flutter_cars/pages/home_page.dart';
+import 'package:flutter_cars/utils/navigation.dart';
+import 'package:flutter_cars/widgets/app_button.dart';
+import 'package:flutter_cars/widgets/app_text.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _tLogin = TextEditingController();
+
   final _tPassword = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+
+  final _focusPassword = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +42,31 @@ class LoginPage extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: [
-            _text(
+            AppText(
               "Login",
               "Digite o login",
               controller: _tLogin,
               validator: _validateLogin,
               keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              nextFocus: _focusPassword,
             ),
             SizedBox(
               height: 10,
             ),
-            _text(
+            AppText(
               "Senha",
               "Digite a senha",
               obscureText: true,
               controller: _tPassword,
               validator: _validatePassword,
               keyboardType: TextInputType.number,
+              focusNode: _focusPassword,
             ),
             SizedBox(
               height: 20,
             ),
-            _button("Login", _onClickLogin),
+            AppButton("Login", _onClickLogin),
           ],
         ),
       ),
@@ -61,51 +83,7 @@ class LoginPage extends StatelessWidget {
     return null;
   }
 
-  Container _button(text, onPressed) {
-    return Container(
-      height: 46,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(
-          text,
-        ),
-        style: TextButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.blue,
-          textStyle: TextStyle(
-            fontSize: 25,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _text(
-    label,
-    hint, {
-    obscureText = false,
-    controller,
-    FormFieldValidator<String>? validator,
-    TextInputType? keyboardType,
-  }) {
-    return TextFormField(
-      validator: validator,
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(
-          fontSize: 25,
-          color: Colors.grey,
-        ),
-        hintText: hint,
-        hintStyle: TextStyle(fontSize: 16),
-      ),
-    );
-  }
-
-  void _onClickLogin() {
+  void _onClickLogin() async {
     bool? formOk = _formKey.currentState?.validate();
     if (formOk != true) return;
 
@@ -113,5 +91,11 @@ class LoginPage extends StatelessWidget {
     String password = _tPassword.text;
 
     print("Login: $login, Senha: $password");
+
+    bool ok = await LoginApi.login(login, password);
+    if (ok)
+      navigate(context, HomePage());
+    else
+      print("Login incorreto");
   }
 }

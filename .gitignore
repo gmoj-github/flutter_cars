@@ -138,3 +138,6 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 !.vscode/settings.json
+/Cars.NET.API/Cars.NET.API/obj
+/Cars.NET.API/Cars.NET.API/bin
+/Cars.NET.API/.vs
