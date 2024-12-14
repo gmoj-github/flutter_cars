@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/API/login_api.dart';
+import 'package:flutter_cars/models/user.dart';
 import 'package:flutter_cars/pages/home_page.dart';
 import 'package:flutter_cars/utils/navigation.dart';
 import 'package:flutter_cars/widgets/app_button.dart';
@@ -92,8 +93,8 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Login: $login, Senha: $password");
 
-    bool ok = await LoginApi.login(login, password);
-    if (ok)
+    User? user = await LoginApi.login(login, password);
+    if (user != null)
       navigate(context, HomePage());
     else
       print("Login incorreto");
