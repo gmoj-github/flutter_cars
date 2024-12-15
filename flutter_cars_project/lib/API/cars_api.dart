@@ -8,7 +8,6 @@ import 'package:flutter_cars/webservice_mocks/webservice.dart';
 class CarsApi{
   static Future<ApiResponse<List<Car>>> getCars() async {
     var url = "https://";
-    Map<String, String> headers = {"Content-Type": "application/json"};
 
     var httpResponse = await Http.getCars(url);
     Map<String, dynamic> mapResponse = json.decode(httpResponse.body);
