@@ -25,12 +25,50 @@ class Http {
           }
           ''');
     } else {
-      return Response(statusCode: ResponseType.Forbidden, body: '''
-      {
-        "statusCode": 403,
-        "message": "Você não tem permissão para acessar esse webservice!"
-      }
-      ''');
+      return Response(statusCode: ResponseType.Forbidden, body: _forbidden());
     }
+  }
+
+  static Future<Response> getCars(String url,
+      {String? body, Map<String, String>? headers, bool success = true}) async {
+
+    // Simulating request time
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (success) {
+      return Response(statusCode: ResponseType.Success, body: '''
+          {
+            "statusCode": 200,
+            "message": "Success",
+            "data": {
+              "cars": [
+                {
+                  "name": "HB20S",
+                  "urlPhoto": "assets/hb20s.png"
+                },
+                {
+                  "name": "Nissan Kicks",
+                  "urlPhoto": "assets/kicks.png"
+                },
+                {
+                  "name": "Tracker",
+                  "urlPhoto": "assets/tracker.png"
+                }
+              ]
+            }
+          }
+          ''');
+    } else {
+      return Response(statusCode: ResponseType.Forbidden, body: _forbidden());
+    }
+  }
+
+  static String _forbidden() {
+    return '''
+    {
+      "statusCode": 403,
+      "message": "Você não tem permissão para acessar esse webservice!"
+    }
+    ''';
   }
 }
