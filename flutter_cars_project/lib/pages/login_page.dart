@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/API/login_api.dart';
+import 'package:flutter_cars/api/api_response.dart';
 import 'package:flutter_cars/models/user.dart';
 import 'package:flutter_cars/pages/home_page.dart';
+import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/navigation.dart';
 import 'package:flutter_cars/widgets/app_button.dart';
 import 'package:flutter_cars/widgets/app_text.dart';
@@ -20,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   final _focusPassword = FocusNode();
+
+  bool _showProgress = false;
 
   @override
   void initState() {
@@ -67,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton("Login", _onClickLogin),
+            AppButton("Login", onPressed:  _onClickLogin, showProgress: _showProgress,),
           ],
         ),
       ),
@@ -93,10 +97,19 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Login: $login, Senha: $password");
 
-    User? user = await LoginApi.login(login, password);
-    if (user != null)
-      navigate(context, HomePage());
-    else
-      print("Login incorreto");
+    setState(() {
+      _showProgress = true;
+    });
+
+    ApiResponse<User> apiResponse = await LoginApi.login(login, password);
+    if (apiResponse.ok)
+      navigate(context, HomePage(), replace: true);
+    else {
+      alert(context, apiResponse.message);
+    }
+
+    setState(() {
+      _showProgress = false;
+    });
   }
 }

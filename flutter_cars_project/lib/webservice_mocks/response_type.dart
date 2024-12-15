@@ -1,0 +1,4 @@
+enum ResponseType{
+  Success,
+  Forbidden
+}
