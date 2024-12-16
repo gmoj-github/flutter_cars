@@ -18,6 +18,7 @@ class Http {
                 "login": "GilsonOliveira",
                 "name": "Gilson Medeiros de Oliveira Junior",
                 "email": "gilson@gmail.com",
+                "urlPhoto": "assets/user.png",
                 "token": "klLAJds0SJDALKJDlAJSDLKJQj0lksadjlkasjd0093",
                 "roles": ["ADMIN","USER"]
               }

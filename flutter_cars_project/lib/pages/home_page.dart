@@ -17,12 +17,14 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
 
+    _initTabs();
+  }
+
+  _initTabs() async {
     _tabController = TabController(length: 3, vsync: this);
 
-    Future<int> future = Preferences.getInt("tabIndex");
-    future.then((int tabIndex){
-      _tabController.index = tabIndex;
-    });
+    int tabIndex = await Preferences.getInt("tabIndex");
+    _tabController.index = tabIndex;
 
     _tabController.addListener(() {
       Preferences.setInt("tabIndex", _tabController.index);

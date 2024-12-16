@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cars/models/user.dart';
 import 'package:flutter_cars/pages/login_page.dart';
 import 'package:flutter_cars/utils/navigation.dart';
 
@@ -10,16 +11,16 @@ class DrawerList extends StatelessWidget {
       child: Drawer(
         child: ListView(
           children: [
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-              ),
-              accountName: Text("Gilson Oliveira"),
-              accountEmail: Text("gilson@gmail.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage("assets/images/dog1.jpeg"),
-              ),
-            ),
+            FutureBuilder(
+                future: User.getFromPreferences(),
+                builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                  if(snapshot.hasData){
+                    User? user = snapshot.data;
+                    _buildUserHeader(user);
+                    return user != null ? _buildUserHeader(user) : Container();
+                  }
+                  return Container();
+                }),
             ListTile(
               leading: Icon(Icons.star),
               title: Text("Favoritos"),
@@ -49,6 +50,19 @@ class DrawerList extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  UserAccountsDrawerHeader _buildUserHeader(user) {
+    return UserAccountsDrawerHeader(
+      decoration: BoxDecoration(
+        color: Colors.blueAccent,
+      ),
+      accountName: Text(user.name!),
+      accountEmail: Text(user.email!),
+      currentAccountPicture: CircleAvatar(
+        backgroundImage: AssetImage(user.urlPhoto!),
       ),
     );
   }

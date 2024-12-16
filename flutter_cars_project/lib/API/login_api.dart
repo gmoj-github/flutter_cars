@@ -20,9 +20,8 @@ class LoginApi {
       var httpResponse = await Http.login(url, headers: headers, body: body, success: true);
       Map<String, dynamic> mapResponse = json.decode(httpResponse.body);
       if (httpResponse.statusCode == ResponseType.Success) {
-
         final user = User.fromJson(mapResponse);
-        print(user.toString());
+        user.saveOnPreferences();
 
         return  ApiResponse.ok(user);
       }
