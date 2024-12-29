@@ -28,6 +28,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
+    Future<User> future = User.getFromPreferences();
+    future.then((User user) {
+      if (user != null)
+        setState(() {
+          navigate(context, HomePage(), replace: true);
+        });
+    });
   }
 
   @override
@@ -71,7 +79,11 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton("Login", onPressed:  _onClickLogin, showProgress: _showProgress,),
+            AppButton(
+              "Login",
+              onPressed: _onClickLogin,
+              showProgress: _showProgress,
+            ),
           ],
         ),
       ),

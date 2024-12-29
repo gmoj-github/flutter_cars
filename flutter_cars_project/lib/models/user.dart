@@ -49,6 +49,10 @@ class User {
     return User.fromJson(userMap);
   }
 
+  static void clear() {
+    Preferences.setString("user.prefs", "");
+  }
+
   @override
   String toString() {
     return 'User{login: $login, name: $name, email: $email, urlPhoto: $urlPhoto, token: $token, roles: $roles}';
