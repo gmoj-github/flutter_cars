@@ -29,8 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
 
-    Future<User> future = User.getFromPreferences();
-    future.then((User user) {
+    Future<User?> future = User.getFromPreferences();
+    future.then((User? user) {
       if (user != null)
         setState(() {
           navigate(context, HomePage(), replace: true);

@@ -13,7 +13,7 @@ class DrawerList extends StatelessWidget {
           children: [
             FutureBuilder(
                 future: User.getFromPreferences(),
-                builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                   if(snapshot.hasData){
                     User? user = snapshot.data;
                     _buildUserHeader(user);

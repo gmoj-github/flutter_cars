@@ -15,9 +15,13 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
+    print("HomePage -> [+] initState");
+
     super.initState();
 
     _initTabs();
+
+    print("HomePage -> [-] initState");
   }
 
   _initTabs() async {
@@ -33,6 +37,9 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+
+    print("HomePage -> build!");
+
     return Scaffold(
       appBar: _buildAppBar(),
       drawer: DrawerList(),
@@ -51,9 +58,9 @@ class _HomePageState extends State<HomePage>
     return TabBarView(
       controller: _tabController,
       children: [
-        CarsListview(),
-        CarsListview(),
-        CarsListview(),
+        CarsListview("Clássicos"),
+        CarsListview("Esportivos"),
+        CarsListview("Luxo"),
       ],
     );
   }

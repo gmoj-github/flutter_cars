@@ -43,8 +43,10 @@ class User {
     Preferences.setString("user.prefs", json);
   }
 
-  static Future<User> getFromPreferences() async {
+  static Future<User?> getFromPreferences() async {
     String userPrefs = await Preferences.getString("user.prefs");
+    if(userPrefs == "")
+      return null;
     Map<String, dynamic> userMap = converter.json.decode(userPrefs);
     return User.fromJson(userMap);
   }
